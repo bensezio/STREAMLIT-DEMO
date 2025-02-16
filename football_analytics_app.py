@@ -8,7 +8,7 @@ import seaborn as sns
 
 # Optional: Set up page config (title, layout, etc.)
 st.set_page_config(
-    page_title="Football Analytics Capstone",
+    page_title="Capstone: Forecasting Football Player Performance",
     layout="centered",
     initial_sidebar_state="expanded"
 )

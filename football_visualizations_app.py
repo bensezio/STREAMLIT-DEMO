@@ -20,11 +20,11 @@ df = load_data()
 
 # Sidebar: Interactive Filters
 st.sidebar.header("Filters")
-# Filter by Country (assuming your CSV has a 'Country' column)
+# Filter by Country (CSV has a 'Nation' column)
 countries = st.sidebar.multiselect(
-    "Select Country",
-    options=df["Country"].unique(),
-    default=df["Country"].unique()
+    "Select Nation",
+    options=df["Nation"].unique(),
+    default=df["Nation"].unique()
 )
 # Additional filter: e.g., by Squad if available
 squads = st.sidebar.multiselect(
@@ -34,7 +34,7 @@ squads = st.sidebar.multiselect(
 )
 
 # Apply filters
-df_filtered = df[(df["Country"].isin(countries)) & (df["Squad"].isin(squads))]
+df_filtered = df[(df["Nation"].isin(countries)) & (df["Squad"].isin(squads))]
 
 # Main Title
 st.title("Football Analytics Capstone Dashboard")
