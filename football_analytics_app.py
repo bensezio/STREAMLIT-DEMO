@@ -109,7 +109,7 @@ def main():
         st.header("3. Model Training and Results")
         
         # Load and preprocess data
-        df = load_data("data/football_data.csv")
+        df = load_data("data/FPP.csv")
         df = preprocess_data(df)
         
         # Train or load your model
@@ -120,13 +120,29 @@ def main():
         
         # You can add interactive elements, metrics, or other visuals here
         # e.g., st.metric(label="Mean Absolute Error", value="0.123")
-    
+        # Display Key Metrics
+        st.subheader("Key Metrics")
+        col1, col2, col3, col4 = st.columns(4)
+        with col1:
+            total_matches = df_filtered["MP"].sum() if "MP" in df_filtered.columns else "N/A"
+            st.metric("Total Matches Played", total_matches)
+        with col2:
+            total_goals_for = df_filtered["GF"].sum() if "GF" in df_filtered.columns else "N/A"
+            st.metric("Total Goals For", total_goals_for)
+        with col3:
+            total_goals_against = df_filtered["GA"].sum() if "GA" in df_filtered.columns else "N/A"
+            st.metric("Total Goals Against", total_goals_against)
+        with col4:
+            avg_pts = round(df_filtered["Pts/MP"].mean(), 2) if "Pts/MP" in df_filtered.columns else "N/A"
+            st.metric("Average Points per Match", avg_pts)
+        # End of Metrics
+            
     # Section 4: About
     else:
         st.header("4. About This App")
         st.write("""
         This Streamlit app demonstrates how to deploy a Football Analytics project.
-        Adjust the code to match your dataset, EDA, and modeling approach.
+        Adjust the code to match the dataset, EDA, and modeling approach.
         For more information on Streamlit, visit [Streamlit Docs](https://docs.streamlit.io/).
         """)
 
