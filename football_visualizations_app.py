@@ -1,4 +1,4 @@
-# Filename: football_analytics_app.py
+# Filename: football_visualizations_app.py
 
 import streamlit as st
 import pandas as pd
@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Configure the page
-st.set_page_config(page_title="Football Analytics Dashboard", layout="wide")
+st.set_page_config(page_title="Football Analytics Visualizations Dashboard", layout="wide")
 
 # Cache the data loading for faster performance
 @st.cache_data
