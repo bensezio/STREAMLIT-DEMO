@@ -63,7 +63,7 @@ def exploratory_analysis(df):
     # Example descriptive statistics
     stats = df.describe()
 
-    # @TODO:
+
     # Display Key Metrics
     st.subheader("Key Metrics")
     col1, col2, col3, col4 = st.columns(4)
@@ -79,6 +79,7 @@ def exploratory_analysis(df):
     with col4:
         avg_goals = round(df["G/Sh"].mean(), 2) if "G/Sh" in df.columns else "N/A"
         st.metric("Goals per Shots", avg_goals)
+        
     
     # Example Seaborn figure
     fig, ax = plt.subplots(figsize=(6,4))
@@ -153,26 +154,26 @@ def main():
         st.pyplot(fig)
 
     # /**** VISUALISATIONS **** /
+    # @TODO:
+        # # Display More Key Metrics
+        # st.subheader("Key Metrics")
+        # col1, col2, col3, col4 = st.columns(4)
+        # with col1:
+        #     total_matches = df["MP"].sum() if "MP" in df.columns else "N/A"
+        #     st.metric("Total Matches Played", total_matches)
+        # with col2:
+        #     total_goals = df["Goals"].sum() if "Goals" in df.columns else "N/A"
+        #     st.metric("Total Goals", total_goals)
+        # with col3:
+        #     total_assists = df["Assists"].sum() if "Assists" in df.columns else "N/A"
+        #     st.metric("Total Assists", total_assists)
+        # with col4:
+        #     goals_shts = round(df["G/SoT"].mean(), 2) if "G/SoT" in df.columns else "N/A"
+        #     st.metric("Goals per Shots on Target", goals_shts)
 
-        # Display Key Metrics
-        st.subheader("Key Metrics")
-        col1, col2, col3, col4 = st.columns(4)
-        with col1:
-            total_matches = df["MP"].sum() if "MP" in df.columns else "N/A"
-            st.metric("Total Matches Played", total_matches)
-        with col2:
-            total_goals = df["Goals"].sum() if "Goals" in df.columns else "N/A"
-            st.metric("Total Goals", total_goals)
-        with col3:
-            total_assists = df["Assists"].sum() if "Assists" in df.columns else "N/A"
-            st.metric("Total Assists", total_assists)
-        with col4:
-            avg_pts = round(df["Pts/MP"].mean(), 2) if "Pts/MP" in df.columns else "N/A"
-            st.metric("Average Points per Match", avg_pts)
-
-        # Data Overview
-        st.subheader("Data Overview")
-        st.dataframe(df.head())
+        # # Data Overview
+        # st.subheader("Data Overview")
+        # st.dataframe(df.head())
 
         # Visualization 1: Scatter Plot of Goals vs. Assists by Age
         st.subheader("Goals vs. Assists by Forward Positions")
