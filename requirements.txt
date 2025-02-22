@@ -1,9 +1,6 @@
-# streamlit==1.25.0   # streamlit
-# pandas==1.5.3       # pandas
-# numpy==1.24.3       # numpy
-# plotly==5.16.1
-
-# streamlit==latest
-# pandas==latest
-# numpy==latest
-# plotly==latest
+pandas==2.2.3
+numpy==1.24.3
+plotly==6.0.0
+seaborn==0.13.2
+matplotlib==3.10.0
+streamlit==latest
