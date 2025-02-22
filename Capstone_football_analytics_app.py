@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import time
 
 # Optional: Set up page config (title, layout, etc.)
 st.set_page_config(
@@ -29,13 +30,13 @@ def preprocess_data(df):
     This might include handling missing values, creating new columns, etc.
     """
     # Example: dropping rows with too many missing values
-    # df.dropna(subset=['some_important_column'], inplace=True)
+    df.dropna(subset=['some_important_column'], inplace=True)
 
     # Example: creating a new feature
-    # df['Offensive_Contribution'] = df['Goals'] + df['Assists']
+    df['Offensive_Contribution'] = df['Goals'] + df['Assists']
 
     # # Sidebar: Interactive Filters
-    # st.sidebar.header("Filters")
+    st.sidebar.header("Filters")
 
     # # Filter by Player Positions (CSV has a 'Position_Cleaned' column)
     positions = st.sidebar.multiselect(
@@ -153,28 +154,6 @@ def main():
         st.subheader("Goals Distribution")
         st.pyplot(fig)
 
-    # /**** VISUALISATIONS **** /
-    # @: Another Overview Table */
-        # # Display More Key Metrics
-        # st.subheader("Key Metrics")
-        # col1, col2, col3, col4 = st.columns(4)
-        # with col1:
-        #     total_matches = df["MP"].sum() if "MP" in df.columns else "N/A"
-        #     st.metric("Total Matches Played", total_matches)
-        # with col2:
-        #     total_goals = df["Goals"].sum() if "Goals" in df.columns else "N/A"
-        #     st.metric("Total Goals", total_goals)
-        # with col3:
-        #     total_assists = df["Assists"].sum() if "Assists" in df.columns else "N/A"
-        #     st.metric("Total Assists", total_assists)
-        # with col4:
-        #     goals_shts = round(df["G/SoT"].mean(), 2) if "G/SoT" in df.columns else "N/A"
-        #     st.metric("Goals per Shots on Target", goals_shts)
-
-        # # Data Overview
-        # st.subheader("Data Overview")
-        # st.dataframe(df.head())
-
         # Visualization 1: Scatter Plot of Goals vs. Assists by Age
         st.subheader("Goals vs. Assists by Forward Positions")
         fig, ax = plt.subplots(figsize=(10, 6))
@@ -195,8 +174,10 @@ def main():
             st.pyplot(fig2)
         else:
             st.info("Column 'xG' not found in the dataset.")
-            
+
+    
     # /**** END OF VISUALISATIONS ***/
+
     
     # Section 4: Model Training
     else: 
@@ -207,14 +188,71 @@ def main():
         df = load_data("data/cleaned_dataset.csv")
         df = preprocess_data(df)
         
-        # Train or load your model
+        # --- Model Training Code ---
+        # Here you can integrate your actual model training code.
+        # For demonstration, we'll simulate model training output and history.
         results = model_training(df)
-        
         st.write("Example model output or predictions:")
         st.write(results)
         
-        # You can add interactive elements, metrics, or other visuals here
-        # e.g., st.metric(label="Mean Absolute Error", value="0.123")
+        # Display a sample metric (replace with your actual metric, e.g., MAE)
+        st.metric(label="Mean Absolute Error", value="0.123")
+        
+        # --- Model Training Visualization ---
+        def model_training_visualization():
+            """
+            Simulate a training visualization by plotting training and validation loss over epochs.
+            Replace the dummy data with your actual training history.
+            """
+            epochs = list(range(1, 11))
+            training_loss = [0.9, 0.8, 0.72, 0.65, 0.6, 0.55, 0.52, 0.5, 0.48, 0.46]
+            validation_loss = [0.95, 0.85, 0.78, 0.70, 0.67, 0.64, 0.62, 0.60, 0.59, 0.58]
+            
+            fig, ax = plt.subplots(figsize=(10, 6))
+            ax.plot(epochs, training_loss, label="Training Loss", marker='o')
+            ax.plot(epochs, validation_loss, label="Validation Loss", marker='o')
+            ax.set_xlabel("Epochs")
+            ax.set_ylabel("Loss")
+            ax.set_title("Model Training Loss over Epochs")
+            ax.legend()
+            return fig
+
+        # Call the visualization function and display the plot
+        st.subheader("Training Loss Visualization")
+        loss_fig = model_training_visualization()
+        st.pyplot(loss_fig)
+
+        # # Training my model data
+        # st.title("Model Training Visualization")
+
+        # Dummy data setup: empty lists to store loss values
+        epochs = list(range(1, 11))
+        training_loss = []
+        validation_loss = []
+
+        # Create a placeholder that we will update with our plot
+        plot_placeholder = st.empty()
+
+        # Simulate model training by updating loss values for each epoch
+        for epoch in epochs:
+            # Append dummy loss values (these values change with each epoch)
+            training_loss.append(1 / epoch + 0.1)      # Example: decreases as epoch increases
+            validation_loss.append(1 / epoch + 0.2)      # Example: slightly higher than training loss
+            
+            # Create a new figure and axis for each update
+            fig, ax = plt.subplots(figsize=(8, 4))
+            ax.plot(epochs[:epoch], training_loss, label="Training Loss", marker='o')
+            ax.plot(epochs[:epoch], validation_loss, label="Validation Loss", marker='o')
+            ax.set_xlabel("Epoch")
+            ax.set_ylabel("Loss")
+            ax.set_title("Model Training Loss Over Epochs")
+            ax.legend()
+            
+            # Update the placeholder with the new figure
+            plot_placeholder.pyplot(fig)
+            
+            # Simulate time delay to mimic training time (1 second per epoch)
+            time.sleep(1)
 
 
 if __name__ == "__main__":
