@@ -161,11 +161,11 @@ def main():
             total_matches = df["MP"].sum() if "MP" in df.columns else "N/A"
             st.metric("Total Matches Played", total_matches)
         with col2:
-            total_goals_for = df["GF"].sum() if "GF" in df.columns else "N/A"
-            st.metric("Total Goals For", total_goals_for)
+            total_goals = df["Goals"].sum() if "Goals" in df.columns else "N/A"
+            st.metric("Total Goals", total_goals)
         with col3:
-            total_goals_against = df["GA"].sum() if "GA" in df.columns else "N/A"
-            st.metric("Total Goals Against", total_goals_against)
+            total_assists = df["Assists"].sum() if "Assists" in df.columns else "N/A"
+            st.metric("Total Assists", total_assists)
         with col4:
             avg_pts = round(df["Pts/MP"].mean(), 2) if "Pts/MP" in df.columns else "N/A"
             st.metric("Average Points per Match", avg_pts)
@@ -174,8 +174,8 @@ def main():
         st.subheader("Data Overview")
         st.dataframe(df.head())
 
-        # Visualization 1: Scatter Plot of Goals vs. Against by Age
-        st.subheader("Goals vs. Against by Forward Positions")
+        # Visualization 1: Scatter Plot of Goals vs. Assists by Age
+        st.subheader("Goals vs. Assists by Forward Positions")
         fig, ax = plt.subplots(figsize=(10, 6))
         sns.scatterplot(data=df, x="Goals", y="Assists", hue="Position_Cleaned", ax=ax)
         ax.set_xlabel("Goals")
