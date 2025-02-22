@@ -8,11 +8,12 @@ import seaborn as sns
 
 # Optional: Set up page config (title, layout, etc.)
 st.set_page_config(
-    page_title="Capstone: Forecasting Football Player Performance",
+    page_title="Capstone Project: Forecasting Football Player Performance",
     layout="centered",
     initial_sidebar_state="expanded"
 )
 
+# LOADING... THE DATA
 def load_data(file_path):
     """
     Loads data from a CSV file (or other format) into a pandas DataFrame.
@@ -21,6 +22,7 @@ def load_data(file_path):
     df = pd.read_csv(file_path)
     return df
 
+# CLEANING THE DATA
 def preprocess_data(df):
     """
     Perform any data cleaning or feature engineering steps here.
@@ -61,6 +63,7 @@ def model_training(df):
     }
     return results
 
+# MAIN SECTION OF APP
 def main():
     """
     Main function that orchestrates the Streamlit application.
@@ -101,17 +104,17 @@ def main():
         st.header("3. Data Exploration")
         
         # For demonstration, we assume you have a default CSV to load
-        # Replace 'data/football_data.csv' with your actual path or file
-        # df = load_data("data/football_data.csv")
-        # df = preprocess_data(df)
+        # Replace 'data/football_data.csv' with a newly cleaned dataset 'actual path' or file
+        df = load_data("data/cleaned_dataset.csv")
+        df = preprocess_data(df)
         
         # # Display some EDA results
-        # stats, fig = exploratory_analysis(df)
-        # st.subheader("Descriptive Statistics")
-        # st.write(stats)
+        stats, fig = exploratory_analysis(df)
+        st.subheader("Descriptive Statistics")
+        st.write(stats)
         
-        # st.subheader("Goals Distribution")
-        # st.pyplot(fig)
+        st.subheader("Goals Distribution")
+        st.pyplot(fig)
     
     # Section 4: Model Training
     else: 
@@ -119,14 +122,14 @@ def main():
         st.header("4. Model Training and Results")
         
         # Load and preprocess data
-        # df = load_data("data/football_data.csv")
-        # df = preprocess_data(df)
+        df = load_data("data/cleaned_dataset.csv")
+        df = preprocess_data(df)
         
-        # # Train or load your model
-        # results = model_training(df)
+        # Train or load your model
+        results = model_training(df)
         
-        # st.write("Example model output or predictions:")
-        # st.write(results)
+        st.write("Example model output or predictions:")
+        st.write(results)
         
         # You can add interactive elements, metrics, or other visuals here
         # e.g., st.metric(label="Mean Absolute Error", value="0.123")

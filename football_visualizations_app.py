@@ -12,7 +12,7 @@ st.set_page_config(page_title="Football Analytics Visualizations Dashboard", lay
 @st.cache_data
 def load_data():
     # Replace the file path with the correct location if necessary
-    df = pd.read_csv("2022-2023_Football_Player_Stats.csv")
+    df = pd.read_csv("data/football_data.csv")
     return df
 
 # Load the data
@@ -37,7 +37,7 @@ squads = st.sidebar.multiselect(
 df_filtered = df[(df["Nation"].isin(countries)) & (df["Squad"].isin(squads))]
 
 # Main Title
-st.title("Football Analytics Capstone Dashboard")
+st.title("Capstone Project Dashboard")
 
 # Display Key Metrics
 st.subheader("Key Metrics")

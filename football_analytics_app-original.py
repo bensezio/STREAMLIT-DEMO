@@ -65,27 +65,18 @@ def main():
     """
     Main function that orchestrates the Streamlit application.
     """
-    st.title("Football Player Insights: A Data-Driven Performance Analysis")
+    st.title("Capstone: Football Player Performance Analytics")
 
     # Sidebar for user inputs or navigation
     st.sidebar.title("Navigation")
     app_mode = st.sidebar.selectbox(
         "Choose a section:",
-        ["About", "Data Upload", "Data Exploration", "Model Training"]
+        ["Data Upload", "Data Exploration", "Model Training", "About"]
     )
-
-    # Section 1: About
-    if app_mode == "About":
-        st.header("1. About This App")
-        st.write("""
-        Explore and visualize football player stats and attributes to identify top performers using data-driven analytics. 
-        Adjust filters to match the dataset, perform EDA, and refine models for deeper insights. 
-        For more details on Streamlit, visit [Streamlit Docs](https://docs.streamlit.io/).
-        """)   
-
-    # Section 2: Data Upload
-    elif app_mode == "Data Upload":
-        st.header("2. Data Upload")
+    
+    # Section 1: Data Upload
+    if app_mode == "Data Upload":
+        st.header("1. Data Upload")
         uploaded_file = st.file_uploader("Upload your dataset (CSV file):", type=["csv"])
         
         if uploaded_file is not None:
@@ -96,41 +87,48 @@ def main():
         else:
             st.info("Please upload a CSV file to proceed.")
     
-    # Section 3: Data Exploration
+    # Section 2: Data Exploration
     elif app_mode == "Data Exploration":
-        st.header("3. Data Exploration")
+        st.header("2. Data Exploration")
         
         # For demonstration, we assume you have a default CSV to load
         # Replace 'data/football_data.csv' with your actual path or file
-        # df = load_data("data/football_data.csv")
-        # df = preprocess_data(df)
+        df = load_data("data/football_data.csv")
+        df = preprocess_data(df)
         
-        # # Display some EDA results
-        # stats, fig = exploratory_analysis(df)
-        # st.subheader("Descriptive Statistics")
-        # st.write(stats)
+        # Display some EDA results
+        stats, fig = exploratory_analysis(df)
+        st.subheader("Descriptive Statistics")
+        st.write(stats)
         
-        # st.subheader("Goals Distribution")
-        # st.pyplot(fig)
+        st.subheader("Goals Distribution")
+        st.pyplot(fig)
     
-    # Section 4: Model Training
-    else: 
-        app_mode == "Model Training"
-        st.header("4. Model Training and Results")
+    # Section 3: Model Training
+    elif app_mode == "Model Training":
+        st.header("3. Model Training and Results")
         
         # Load and preprocess data
-        # df = load_data("data/football_data.csv")
-        # df = preprocess_data(df)
+        df = load_data("data/football_data.csv")
+        df = preprocess_data(df)
         
-        # # Train or load your model
-        # results = model_training(df)
+        # Train or load your model
+        results = model_training(df)
         
-        # st.write("Example model output or predictions:")
-        # st.write(results)
+        st.write("Example model output or predictions:")
+        st.write(results)
         
         # You can add interactive elements, metrics, or other visuals here
         # e.g., st.metric(label="Mean Absolute Error", value="0.123")
-
+    
+    # Section 4: About
+    else:
+        st.header("4. About This App")
+        st.write("""
+        This Streamlit app demonstrates how to deploy a Football Analytics project.
+        Adjust the code to match the dataset, EDA, and modeling approach.
+        For more information on Streamlit, visit [Streamlit Docs](https://docs.streamlit.io/).
+        """)
 
 if __name__ == "__main__":
     main()
