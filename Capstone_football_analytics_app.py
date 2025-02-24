@@ -6,6 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import time
+import joblib
 
 # Optional: Set up page config (title, layout, etc.)
 st.set_page_config(
@@ -187,7 +188,7 @@ def main():
         st.header("4. Model Training and Results")
         
         # Load and preprocess data
-        df = load_data("data/cleaned_dataset.csv")
+        df = load_data("data/FPP.csv")
         df = preprocess_data(df)
         
         # --- Model Training Code ---
@@ -201,6 +202,30 @@ def main():
         st.metric(label="Mean Absolute Error", value="0.123")
         
         # --- Model Training Visualization ---
+
+        # Select the Forward Player Model 
+        # Load trained models
+        forwards_model = joblib.load('models/forwards_model.pkl')
+
+        # Evaluate the model
+        rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+        r2 = r2_score(y_test, y_pred)
+        print(f'RMSE: {rmse}')
+        print(f'R² Score: {r2}')
+
+        # Plot actual vs predicted scores
+        plt.figure(figsize=(8, 6))
+        plt.scatter(y_test, y_pred, alpha=0.7, color='blue')
+        plt.plot([min(y_test), max(y_test)], [min(y_test), max(y_test)], linestyle='--', color='red')
+        plt.xlabel('Actual Performance Score')
+        plt.ylabel('Predicted Performance Score')
+        plt.title('Actual vs Predicted Performance Score (Forwards Model)')
+
+
+
+
+
+
         def model_training_visualization():
             """
             Simulate a training visualization by plotting training and validation loss over epochs.
