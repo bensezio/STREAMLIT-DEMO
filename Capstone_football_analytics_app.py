@@ -200,7 +200,7 @@ def main():
             np.random.seed(42)
             n = 300
             data = {
-                "Position_Cleaned": np.random.choice(["Forward", "Midfielder", "Defender"], size=n),
+                "Position_Cleaned": np.random.choice(["Forward", "Midfielder", "Defender", "Goalkeeper"], size=n),
                 "Goals": np.random.randint(0, 10, size=n),
                 "Shots": np.random.randint(10, 50, size=n),
                 "Assists": np.random.randint(0, 5, size=n),
@@ -210,7 +210,13 @@ def main():
                 "Key Passes": np.random.randint(0, 20, size=n),
                 "Tackles": np.random.randint(0, 10, size=n),
                 "Interceptions": np.random.randint(0, 10, size=n),
-                "Clearances": np.random.randint(0, 10, size=n)
+                "Clearances": np.random.randint(0, 10, size=n),
+                # Goalkeeper-specific attributes
+                "Saves": np.random.randint(0, 10, size=n),
+                "Clean Sheets": np.random.randint(0, 5, size=n),
+                "Goals Conceded": np.random.randint(0, 5, size=n),
+                "Save Percentage": np.random.uniform(50, 100, size=n),
+                "Passes Completed": np.random.randint(20, 80, size=n)
             }
             return pd.DataFrame(data)
 
@@ -220,7 +226,7 @@ def main():
         st.sidebar.header("Model & Visualization Options")
         position = st.sidebar.selectbox(
             "Select Player Position",
-            options=["Forward", "Midfielder", "Defender"]
+            options=["Forward", "Midfielder", "Defender", "Goalkeeper"]
         )
 
         # Filter the dataset based on selected position
@@ -233,6 +239,8 @@ def main():
             available_attrs = ["Passes", "Key Passes", "Assists", "xA", "xG"]
         elif position == "Defender":
             available_attrs = ["Tackles", "Interceptions", "Clearances"]
+        elif position == "Goalkeeper":
+            available_attrs = ["Saves", "Clean Sheets", "Goals Conceded", "Save Percentage", "Passes Completed"]
 
         # Sidebar: Let the user choose which attributes to visualize
         selected_attrs = st.sidebar.multiselect(
