@@ -191,91 +191,84 @@ def main():
         df = load_data("data/FPP.csv")
         df = preprocess_data(df)
         
-        # --- Model Training Code ---
-        # Here you can integrate your actual model training code.
-        # For demonstration, we'll simulate model training output and history.
-        results = model_training(df)
-        st.write("Example model output or predictions:")
-        st.write(results)
-        
-        # Display a sample metric (replace with your actual metric, e.g., MAE)
-        st.metric(label="Mean Absolute Error", value="0.123")
-        
-        # --- Model Training Visualization ---
-
-        # Select the Forward Player Model 
-        # # Load trained models
-        # forwards_model = joblib.load('models/forwards_model.pkl')
-
-        # # Evaluate the model
-        # rmse = np.sqrt(mean_squared_error(y_test, y_pred))
-        # r2 = r2_score(y_test, y_pred)
-        # print(f'RMSE: {rmse}')
-        # print(f'R² Score: {r2}')
-
-        # # Plot actual vs predicted scores
-        # plt.figure(figsize=(8, 6))
-        # plt.scatter(y_test, y_pred, alpha=0.7, color='blue')
-        # plt.plot([min(y_test), max(y_test)], [min(y_test), max(y_test)], linestyle='--', color='red')
-        # plt.xlabel('Actual Performance Score')
-        # plt.ylabel('Predicted Performance Score')
-        # plt.title('Actual vs Predicted Performance Score (Forwards Model)')
+        # --- BEGIN Model Visualisations Code ---#
 
 
-        def model_training_visualization():
-            """
-            Simulate a training visualization by plotting training and validation loss over epochs.
-            Replace the dummy data with your actual training history.
-            """
-            epochs = list(range(1, 11))
-            training_loss = [0.9, 0.8, 0.72, 0.65, 0.6, 0.55, 0.52, 0.5, 0.48, 0.46]
-            validation_loss = [0.95, 0.85, 0.78, 0.70, 0.67, 0.64, 0.62, 0.60, 0.59, 0.58]
-            
-            fig, ax = plt.subplots(figsize=(10, 6))
-            ax.plot(epochs, training_loss, label="Training Loss", marker='o')
-            ax.plot(epochs, validation_loss, label="Validation Loss", marker='o')
-            ax.set_xlabel("Epochs")
-            ax.set_ylabel("Loss")
-            ax.set_title("Model Training Loss over Epochs")
-            ax.legend()
-            return fig
+        # Create a dummy dataset
+        @st.cache_data
+        def create_dummy_data():
+            np.random.seed(42)
+            n = 300
+            data = {
+                "Position_Cleaned": np.random.choice(["Forward", "Midfielder", "Defender"], size=n),
+                "Goals": np.random.randint(0, 10, size=n),
+                "Shots": np.random.randint(10, 50, size=n),
+                "Assists": np.random.randint(0, 5, size=n),
+                "xG": np.random.uniform(0, 5, size=n),
+                "xA": np.random.uniform(0, 3, size=n),
+                "Passes": np.random.randint(20, 100, size=n),
+                "Key Passes": np.random.randint(0, 20, size=n),
+                "Tackles": np.random.randint(0, 10, size=n),
+                "Interceptions": np.random.randint(0, 10, size=n),
+                "Clearances": np.random.randint(0, 10, size=n)
+            }
+            return pd.DataFrame(data)
 
-        # Call the visualization function and display the plot
-        st.subheader("Training Loss Visualization")
-        loss_fig = model_training_visualization()
-        st.pyplot(loss_fig)
+        df = create_dummy_data()
 
-        # # Training my model data
-        # st.title("Model Training Visualization")
+        # Sidebar: Dynamic selection of player position
+        st.sidebar.header("Model & Visualization Options")
+        position = st.sidebar.selectbox(
+            "Select Player Position",
+            options=["Forward", "Midfielder", "Defender"]
+        )
 
-        # Dummy data setup: empty lists to store loss values
-        epochs = list(range(1, 11))
-        training_loss = []
-        validation_loss = []
+        # Filter the dataset based on selected position
+        df_position = df[df["Position_Cleaned"] == position]
 
-        # Create a placeholder that we will update with our plot
-        plot_placeholder = st.empty()
+        # Define available attributes for each position
+        if position == "Forward":
+            available_attrs = ["Goals", "Shots", "Assists", "xG", "xA"]
+        elif position == "Midfielder":
+            available_attrs = ["Passes", "Key Passes", "Assists", "xA", "xG"]
+        elif position == "Defender":
+            available_attrs = ["Tackles", "Interceptions", "Clearances"]
 
-        # Simulate model training by updating loss values for each epoch
-        for epoch in epochs:
-            # Append dummy loss values (these values change with each epoch)
-            training_loss.append(1 / epoch + 0.1)      # Example: decreases as epoch increases
-            validation_loss.append(1 / epoch + 0.2)      # Example: slightly higher than training loss
-            
-            # Create a new figure and axis for each update
-            fig, ax = plt.subplots(figsize=(8, 4))
-            ax.plot(epochs[:epoch], training_loss, label="Training Loss", marker='o')
-            ax.plot(epochs[:epoch], validation_loss, label="Validation Loss", marker='o')
-            ax.set_xlabel("Epoch")
-            ax.set_ylabel("Loss")
-            ax.set_title("Model Training Loss Over Epochs")
-            ax.legend()
-            
-            # Update the placeholder with the new figure
-            plot_placeholder.pyplot(fig)
-            
-            # Simulate time delay to mimic training time (1 second per epoch)
-            time.sleep(1)
+        # Sidebar: Let the user choose which attributes to visualize
+        selected_attrs = st.sidebar.multiselect(
+            "Select Performance Attributes",
+            options=available_attrs,
+            default=available_attrs[:2]
+        )
+
+        st.title(f"Player Performance Analysis for {position}s")
+
+        # Example 1: Scatter Plot
+        if len(selected_attrs) >= 2:
+            st.subheader(f"Scatter Plot: {selected_attrs[0]} vs. {selected_attrs[1]}")
+            fig, ax = plt.subplots(figsize=(8, 6))
+            sns.scatterplot(data=df_position, x=selected_attrs[0], y=selected_attrs[1], ax=ax)
+            ax.set_xlabel(selected_attrs[0])
+            ax.set_ylabel(selected_attrs[1])
+            ax.set_title(f"{selected_attrs[0]} vs. {selected_attrs[1]} for {position}s")
+            fig.tight_layout()
+            st.pyplot(fig)
+        else:
+            st.info("Please select at least two attributes to display a scatter plot.")
+
+        # Example 2: Histograms for each selected attribute
+        for attr in selected_attrs:
+            st.subheader(f"Distribution of {attr} for {position}s")
+            fig, ax = plt.subplots(figsize=(8, 6))
+            sns.histplot(df_position[attr].dropna(), bins=20, kde=True, ax=ax)
+            ax.set_xlabel(attr)
+            ax.set_ylabel("Frequency")
+            ax.set_title(f"Distribution of {attr} for {position}s")
+            fig.tight_layout()
+            st.pyplot(fig)
+
+        # --- END MODEL VISUALISATION CODE --#
+       
 
 
 if __name__ == "__main__":
