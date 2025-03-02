@@ -196,7 +196,7 @@ def main():
 
         # Create a dummy dataset
         @st.cache_data
-        def create_dummy_data():
+        def create_model_data():
             np.random.seed(42)
             n = 300
             data = {
@@ -220,7 +220,7 @@ def main():
             }
             return pd.DataFrame(data)
 
-        df = create_dummy_data()
+        df = create_model_data()
 
         # Sidebar: Dynamic selection of player position
         st.sidebar.header("Model & Visualization Options")
